@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            width: 412px;
+            height: 846px;
+            border-style: solid;
+            border-color: black;
+            display: flex;
+            background: black;
+        }
+
+        .infoboard {
+            width: 60%;
+            height: 80%;
+            border-style: solid;
+            display: flex;
+        }
+
+        .usercode {
+            width: 70%;
+            height: 100%;
+            border-style: solid;
+            border-color: black;
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            margin-top: 20px;
+        }
+
+        .codecontainer {
+            width: 25px;
+            height: 25px;
+            background-color: grey;
+            border-radius: 50%;
+
+
+        }
+
+        .flagcontainer {
+            width: 30%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: auto auto;
+            border-style: solid;
+            border-color: black;
+        }
+
+        .flagcell {
+            background: grey;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+
+        }
+
+        .controlboard {
+            width: 40%;
+            height: 80%;
+            border-style: solid;
+        }
+
+        .colors {
+            width: 90%;
+            height: 35%;
+            display: grid;
+            grid-template-columns: auto auto;
+            border-style: solid;
+            border-color: black;
+            justify-content: center;
+            margin: auto;
+        }
+
+        .colorbtn {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .btn1 {
+            background: blue;
+        }
+
+        .btn2 {
+            background: green;
+        }
+
+        .btn3 {
+            background: yellow;
+        }
+
+        .btn4 {
+            background: red;
+        }
+
+        .btn5 {
+            background: orange;
+        }
+
+        .btn6 {
+            background: purple;
+        }
+
+        .checkcode {
+            width: 90%;
+            height: 25%;
+            border-style: solid;
+            border-color: black;
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="infoboard">
+            <div class="usercode" id="CodeBreakSet"></div>
+            <div class="flagcontainer" id="FlagBox"></div>
+        </div>
+        <div class="controlboard">
+            <div class="colors">
+                <div class="colorbtn btn1" id="jsbtn1" onclick="AssignColorToCode(0)"></div>
+                <!--blue-->
+                <div class="colorbtn btn2" id="jsbtn2" onclick="AssignColorToCode(1)"></div>
+                <!--green-->
+                <div class="colorbtn btn3" id="jsbtn3" onclick="AssignColorToCode(2)"></div>
+                <!--yellow-->
+                <div class="colorbtn btn4" id="jsbtn4" onclick="AssignColorToCode(3)"></div>
+                <!--red-->
+                <div class="colorbtn btn5" id="jsbtn5" onclick="AssignColorToCode(4)"></div>
+                <!--orange-->
+                <div class="colorbtn btn6" id="jsbtn6" onclick="AssignColorToCode(5)"></div>
+                <!--purple-->
+            </div>
+            <div class="checkcode">
+                <br><br>
+                <button onclick="codeMaker()">generate new code and restart</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        cellnum = 0;
+        rownum = 0;
+        code = [0, 0, 0, 0]
+        codeBreaker = [0, 0, 0, 0]
+
+        //user code div fill
+        for (let row = 0; row < 8; row++) {
+            for (let colume = 0; colume < 4; colume++) {
+                document.getElementById('CodeBreakSet').innerHTML += `<div class="codecontainer" id="CodeCell${row}_${colume}"></div>`
+
+            }
+        }
+        for (let index = 0; index <= 7; index++) {
+            for (let z = 0; z <= 3; z++) {
+                document.getElementById('FlagBox').innerHTML += `<div class="flagcell" id="FlagCell${index}_${z}"></div>`
+
+            }
+        }
+
+        function AssignColorToCode(colorCode) {
+            const Bcolors = ["blue", "green", "yellow", "red", "orange", "purple"]
+            document.getElementById(`CodeCell${rownum}_${cellnum}`).style.background = Bcolors[colorCode]
+            codeBreaker[cellnum] = colorCode
+            console.log(codeBreaker)
+            cellnum++
+            blackflag = 0
+            whiteflag = 0
+
+            if (cellnum > 3) {
+
+                for (let index = 0; index < code.length; index++) {
+                    if (code[index] == codeBreaker[index]) {
+                        document.getElementById(`FlagCell${rownum}_${index}`).style.background ="#1ac0c6"
+                        blackflag += 1
+                        if (blackflag==4){
+                            alert("you won! congrats!")
+                            codeMaker()
+                        }
+                        console.log("blackflag:" + blackflag)
+                    } else {
+                        for (let ii = 0; ii < code.length; ii++) {
+                            if (code[index] == codeBreaker[ii]&&index != ii) {
+                                whiteflag += 1
+                                document.getElementById(`FlagCell${rownum}_${index}`).style.background = "white"
+
+                                console.log("white flag:"+whiteflag)
+                            }
+                        }
+                    }
+                }
+                cellnum = 0
+                rownum += 1
+            }
+        }
+        function codeMaker() {
+
+            for (let index = 0; index < code.length; index++) {
+                code[index] = Math.floor(Math.random() * 6);
+            }
+            for (let row = 0; row < 8; row++) {
+                for (let colume = 0; colume < 4; colume++) {
+                    document.getElementById(`CodeCell${row}_${colume}`).style.background = "grey"
+                    document.getElementById(`FlagCell${row}_${colume}`).style.background = "grey"
+
+                }
+            }
+            console.log("secret code:"+code)
+            cellnum = 0;
+            rownum = 0;
+            codeBreaker = [0, 0, 0, 0]
+            blackflag = 0
+            whiteflag = 0
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>
