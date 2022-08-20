@@ -143,6 +143,8 @@
             <div class="checkcode">
                 <br><br>
                 <button onclick="codeMaker()">generate new code and restart</button>
+                <button onclick="reveal()">reveal code!</button>
+                <p style="color:white;" id="disCode"></p>
             </div>
         </div>
 
@@ -151,6 +153,8 @@
     <script>
         cellnum = 0;
         rownum = 0;
+        cellcounter = 0
+        assignCount = 0
         code = [0, 0, 0, 0]
         codeBreaker = [0, 0, 0, 0]
         //user code div fill
@@ -173,12 +177,16 @@
             codeBreaker[cellnum] = colorCode
             console.log(codeBreaker)
             cellnum++
+            assignCount++
+            console.log(assignCount)
+            Copyblackflag = 0
             blackflag = 0
             whiteflag = 0
             // cellnum > 3 ? testwinner()
             if (cellnum > 3) {
                 testwinner()
             }
+
         }
         function testwinner() {
             const copy_Code = JSON.parse(JSON.stringify(code))
@@ -186,6 +194,9 @@
                 if (copy_Code[index] == codeBreaker[index]) {
                     document.getElementById(`FlagCell${rownum}_${index}`).style.background = "#1ac0c6"
                     blackflag += 1
+                    Copyblackflag += 1
+                    copy_Code[index] = 9
+
                     if (blackflag == 4) {
                         alert("you won! congrats!")
                         codeMaker()
@@ -193,23 +204,36 @@
                     console.log("blackflag:" + blackflag)
                 } else {
                     for (let ii = 0; ii < copy_Code.length; ii++) {
-                        if (copy_Code[index] == codeBreaker[ii] && index != ii) {
-                            copy_Code[index] = 9
+                        if (codeBreaker[index] == copy_Code[ii] && index != ii) {
+                            copy_Code[ii] = 9
                             whiteflag += 1
                             document.getElementById(`FlagCell${rownum}_${index}`).style.background = "white"
                             console.log("white flag:" + whiteflag)
+                            break
                         }
                     }
+
                 }
             }
-            cellnum = 0
-            if (blackflag == 4) {
+
+
+
+
+            if (Copyblackflag == 4) {
                 rownum = 0
+                Copyblackflag = 0
             } else {
                 rownum += 1
             }
-        }
+            cellnum = 0
+            if (assignCount == 32) {
 
+
+                alert('you lost! lets start over')
+                codeMaker()
+
+            }
+        }
         function codeMaker() {
 
             for (let index = 0; index < code.length; index++) {
@@ -228,10 +252,13 @@
             codeBreaker = [0, 0, 0, 0]
             blackflag = 0
             whiteflag = 0
+            assignCount = 0
         }
 
 
-
+        function reveal() {
+            disCode.innerHTML = code
+        }
 
 
     </script>
