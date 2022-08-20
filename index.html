@@ -5,15 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>masterMind</title>
     <style>
-        .main {
+       body{
+        background: black;
+       }
+       .main {
             width: 412px;
-            height: 846px;
+            height: 800px;
             border-style: solid;
-            border-color: black;
+            border-color: greenyellow;
             display: flex;
             background: black;
+            margin: auto;
         }
 
         .infoboard {
@@ -82,29 +86,31 @@
             border-radius: 50%;
             padding: 5px;
             margin: 5px;
+            border-color: white;
+            border-style: solid;
         }
 
-        .btn1 {
+        .btn0 {
             background: blue;
         }
 
-        .btn2 {
+        .btn1 {
             background: green;
         }
 
-        .btn3 {
+        .btn2 {
             background: yellow;
         }
 
-        .btn4 {
+        .btn3 {
             background: red;
         }
 
-        .btn5 {
+        .btn4 {
             background: orange;
         }
 
-        .btn6 {
+        .btn5 {
             background: purple;
         }
 
@@ -120,6 +126,7 @@
 </head>
 
 <body>
+    <h1 style="text-align:center; color:white;">MasterMind!</h1>
     <div class="main">
         <div class="infoboard">
             <div class="usercode" id="CodeBreakSet"></div>
@@ -127,17 +134,17 @@
         </div>
         <div class="controlboard">
             <div class="colors">
-                <div class="colorbtn btn1" id="jsbtn1" onclick="AssignColorToCode(0)"></div>
+                <div class="colorbtn btn0" id="jsbtn1" onclick="AssignColorToCode(0)"></div>
                 <!--blue-->
-                <div class="colorbtn btn2" id="jsbtn2" onclick="AssignColorToCode(1)"></div>
+                <div class="colorbtn btn1" id="jsbtn2" onclick="AssignColorToCode(1)"></div>
                 <!--green-->
-                <div class="colorbtn btn3" id="jsbtn3" onclick="AssignColorToCode(2)"></div>
+                <div class="colorbtn btn2" id="jsbtn3" onclick="AssignColorToCode(2)"></div>
                 <!--yellow-->
-                <div class="colorbtn btn4" id="jsbtn4" onclick="AssignColorToCode(3)"></div>
+                <div class="colorbtn btn3" id="jsbtn4" onclick="AssignColorToCode(3)"></div>
                 <!--red-->
-                <div class="colorbtn btn5" id="jsbtn5" onclick="AssignColorToCode(4)"></div>
+                <div class="colorbtn btn4" id="jsbtn5" onclick="AssignColorToCode(4)"></div>
                 <!--orange-->
-                <div class="colorbtn btn6" id="jsbtn6" onclick="AssignColorToCode(5)"></div>
+                <div class="colorbtn btn5" id="jsbtn6" onclick="AssignColorToCode(5)"></div>
                 <!--purple-->
             </div>
             <div class="checkcode">
@@ -147,9 +154,8 @@
                 <p style="color:white; " id="disCode"></p>
             </div>
         </div>
-
     </div>
-
+    <p style="color:white; text-align: center;font-size:20px ;">מאסטר מיינד הוא משחק קופסה לשני שחקנים, בו על כל שחקן בתורו לפצח את הקוד של השחקן היריב. שני השחקנים מחליטים לפני תחילת המשחק כמה משחקונים ישחקו (על המספר להיות זוגי). בתחילת כל משחקון, שחקן אחד בוחר קומבינציה של ארבעה מסמרי משחק בעלי שישה צבעים להיות הקוד שעל יריבו לפצח (בניגוד למשחק בול פגיעה, בבחירת הקוד במאסטר מיינד מותרות חזרות על צבעים). לשחקן היריב יש 12 ניסיונות לפצח את הקוד, כאשר על כל ניחוש הוא מקבל מהשחקן היריב "ניקוד" של מסמר משחק לבן על כל פגיעה ומסמר משחק שחור על כל בול. ישנן וריאציות למשחק בהם יכולים להשתנות אורך הקוד, מספר הצבעים של מסמרי המשחק ומספר הניחושים המותרים.</p>
     <script>
         cellnum = 0;
         rownum = 0;
@@ -161,16 +167,13 @@
         for (let row = 0; row < 8; row++) {
             for (let colume = 0; colume < 4; colume++) {
                 document.getElementById('CodeBreakSet').innerHTML += `<div class="codecontainer" id="CodeCell${row}_${colume}"></div>`
-
             }
         }
         for (let index = 0; index <= 7; index++) {
             for (let z = 0; z <= 3; z++) {
                 document.getElementById('FlagBox').innerHTML += `<div class="flagcell" id="FlagCell${index}_${z}"></div>`
-
             }
         }
-
         function AssignColorToCode(colorCode) {
             const Bcolors = ["blue", "green", "yellow", "red", "orange", "purple"]
             document.getElementById(`CodeCell${rownum}_${cellnum}`).style.background = Bcolors[colorCode]
@@ -186,7 +189,6 @@
             if (cellnum > 3) {
                 testwinner()
             }
-
         }
         function testwinner() {
             const copy_Code = JSON.parse(JSON.stringify(code))
@@ -196,30 +198,24 @@
                     blackflag += 1
                     Copyblackflag += 1
                     copy_Code[index] = 9
-
                     if (blackflag == 4) {
                         alert("you won! congrats!")
                         codeMaker()
                     }
                     console.log("blackflag:" + blackflag)
-                    break
-                } else {
-                    for (let ii = 0; ii < copy_Code.length; ii++) {
-                        if (codeBreaker[index] == copy_Code[ii] && index != ii) {
-                            copy_Code[ii] = 9
-                            whiteflag += 1
-                            document.getElementById(`FlagCell${rownum}_${index}`).style.background = "white"
-                            console.log("white flag:" + whiteflag)
-                            break
-                        }
-                    }
-
                 }
             }
-
-
-
-
+            for (let index = 0; index < copy_Code.length; index++) {
+                for (let ii = 0; ii < copy_Code.length; ii++) {
+                    if (codeBreaker[index] == copy_Code[ii] && index != ii) {
+                        copy_Code[ii] = 9
+                        whiteflag += 1
+                        document.getElementById(`FlagCell${rownum}_${index}`).style.background = "white"
+                        console.log("white flag:" + whiteflag)
+                        break
+                    }
+                }
+            }
             if (Copyblackflag == 4) {
                 rownum = 0
                 Copyblackflag = 0
@@ -228,15 +224,11 @@
             }
             cellnum = 0
             if (assignCount == 32) {
-
-
                 alert('you lost! lets start over')
                 codeMaker()
-
             }
         }
         function codeMaker() {
-
             for (let index = 0; index < code.length; index++) {
                 code[index] = Math.floor(Math.random() * 6);
             }
@@ -244,7 +236,6 @@
                 for (let colume = 0; colume < 4; colume++) {
                     document.getElementById(`CodeCell${row}_${colume}`).style.background = "grey"
                     document.getElementById(`FlagCell${row}_${colume}`).style.background = "grey"
-
                 }
             }
             console.log("secret code:" + code)
@@ -255,15 +246,12 @@
             whiteflag = 0
             assignCount = 0
             disCode.innerHTML = ""
-
         }
-
-
         function reveal() {
-            disCode.innerHTML = code
+            for (let index = 0; index < code.length; index++) {
+                disCode.innerHTML += `<div class="colorbtn btn${code[index]}"></div>`
+            }
         }
-
-
     </script>
 </body>
 
