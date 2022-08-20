@@ -143,8 +143,8 @@
             <div class="checkcode">
                 <br><br>
                 <button onclick="codeMaker()">generate new code and restart</button>
-                <button onclick="reveal()">reveal code!</button>
-                <p style="color:white;" id="disCode"></p>
+                <br><br><br> <button onclick="reveal()" style="padding: 20px;">reveal code!</button><br><br>
+                <p style="color:white; " id="disCode"></p>
             </div>
         </div>
 
@@ -253,6 +253,8 @@
             blackflag = 0
             whiteflag = 0
             assignCount = 0
+            disCode.innerHTML = ""
+
         }
 
 
