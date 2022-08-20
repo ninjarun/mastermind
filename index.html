@@ -153,7 +153,6 @@
         rownum = 0;
         code = [0, 0, 0, 0]
         codeBreaker = [0, 0, 0, 0]
-
         //user code div fill
         for (let row = 0; row < 8; row++) {
             for (let colume = 0; colume < 4; colume++) {
@@ -176,33 +175,41 @@
             cellnum++
             blackflag = 0
             whiteflag = 0
-
+            // cellnum > 3 ? testwinner()
             if (cellnum > 3) {
-
-                for (let index = 0; index < code.length; index++) {
-                    if (code[index] == codeBreaker[index]) {
-                        document.getElementById(`FlagCell${rownum}_${index}`).style.background ="#1ac0c6"
-                        blackflag += 1
-                        if (blackflag==4){
-                            alert("you won! congrats!")
-                            codeMaker()
-                        }
-                        console.log("blackflag:" + blackflag)
-                    } else {
-                        for (let ii = 0; ii < code.length; ii++) {
-                            if (code[index] == codeBreaker[ii]&&index != ii) {
-                                whiteflag += 1
-                                document.getElementById(`FlagCell${rownum}_${index}`).style.background = "white"
-
-                                console.log("white flag:"+whiteflag)
-                            }
+                testwinner()
+            }
+        }
+        function testwinner() {
+            const copy_Code = JSON.parse(JSON.stringify(code))
+            for (let index = 0; index < copy_Code.length; index++) {
+                if (copy_Code[index] == codeBreaker[index]) {
+                    document.getElementById(`FlagCell${rownum}_${index}`).style.background = "#1ac0c6"
+                    blackflag += 1
+                    if (blackflag == 4) {
+                        alert("you won! congrats!")
+                        codeMaker()
+                    }
+                    console.log("blackflag:" + blackflag)
+                } else {
+                    for (let ii = 0; ii < copy_Code.length; ii++) {
+                        if (copy_Code[index] == codeBreaker[ii] && index != ii) {
+                            copy_Code[index] = 9
+                            whiteflag += 1
+                            document.getElementById(`FlagCell${rownum}_${index}`).style.background = "white"
+                            console.log("white flag:" + whiteflag)
                         }
                     }
                 }
-                cellnum = 0
+            }
+            cellnum = 0
+            if (blackflag == 4) {
+                rownum = 0
+            } else {
                 rownum += 1
             }
         }
+
         function codeMaker() {
 
             for (let index = 0; index < code.length; index++) {
@@ -215,7 +222,7 @@
 
                 }
             }
-            console.log("secret code:"+code)
+            console.log("secret code:" + code)
             cellnum = 0;
             rownum = 0;
             codeBreaker = [0, 0, 0, 0]
